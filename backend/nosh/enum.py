@@ -1,0 +1,2 @@
+class OrderStatus:
+    ACTIVE = 'active'
