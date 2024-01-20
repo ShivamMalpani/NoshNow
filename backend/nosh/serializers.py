@@ -27,3 +27,9 @@ class CheckoutSerializer(serializers.Serializer):
 class UndoCheckoutSerializer(serializers.Serializer):
     order_id = serializers.IntegerField()
 
+class PaymentHistorySerializer(serializers.Serializer):
+    TransactionID = serializers.IntegerField()
+    UserID = serializers.IntegerField()
+    Payee = serializers.IntegerField()
+    Amount = serializers.IntegerField()
+    Timestamp = serializers.DateTimeField()

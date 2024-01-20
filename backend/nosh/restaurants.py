@@ -2,7 +2,7 @@
 from rest_framework import generics, status
 from rest_framework.response import Response
 from .models import Order, UserMod, PaymentHistory
-from .serializers import OrderSerializer, OrderHistorySerializer, FreezeOrderSerializer, CheckoutSerializer, UndoCheckoutSerializer
+from .serializers import OrderSerializer, OrderHistorySerializer, FreezeOrderSerializer, CheckoutSerializer, UndoCheckoutSerializer, PaymentHistorySerializer
 from .enum import OrderStatus
 
 
@@ -114,3 +114,12 @@ class UndoCheckoutByOrderIDView(generics.CreateAPIView):
             return Response({'message': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
         except Order.DoesNotExist:
             return Response({'message': 'Order not found'}, status=status.HTTP_404_NOT_FOUND)
+
+
+class PaymentHistoryView(generics.ListAPIView):
+    serializer_class = PaymentHistorySerializer
+
+    def get_queryset(self):
+        UserID = self.request.query_params.get('user_id')
+        print(UserID)
+        return PaymentHistory.objects.filter(UserID=UserID)
