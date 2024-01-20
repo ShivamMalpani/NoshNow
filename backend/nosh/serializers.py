@@ -17,3 +17,9 @@ class FreezeOrderSerializer(serializers.Serializer):
     OrderID = serializers.IntegerField()
     RestaurantID = serializers.IntegerField()
     freeze = serializers.BooleanField()
+
+class CheckoutSerializer(serializers.Serializer):
+    user_id = serializers.IntegerField()
+    restaurant_id = serializers.IntegerField()
+    order_value = serializers.DecimalField(max_digits=10, decimal_places=2)
+    useWallet = serializers.BooleanField()
