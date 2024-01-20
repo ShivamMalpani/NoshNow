@@ -1,8 +1,8 @@
 # views.py
 from rest_framework import generics, status
 from rest_framework.response import Response
-from .models import Order, User, PaymentHistory
-from .serializers import OrderSerializer, OrderHistorySerializer, FreezeOrderSerializer, CheckoutSerializer
+from .models import Order, UserMod, PaymentHistory
+from .serializers import OrderSerializer, OrderHistorySerializer, FreezeOrderSerializer, CheckoutSerializer, UndoCheckoutSerializer
 from .enum import OrderStatus
 
 
@@ -37,9 +37,9 @@ class FreezeOrderView(generics.CreateAPIView):
             order = Order.objects.get(OrderID=order_id, RestaurantID=restaurant_id)
 
             if freeze and order.Status == OrderStatus.ACTIVE:
-                order.Status = OrderStatus.FREEZE
+                order.Status = OrderStatus.FREEZED
                 order.save()
-            elif freeze is False and order.Status == OrderStatus.FREEZE:
+            elif freeze is False and order.Status == OrderStatus.FREEZED:
                 order.Status = OrderStatus.ACTIVE
                 order.save()
 
@@ -58,10 +58,11 @@ class CheckoutByUserIdView(generics.CreateAPIView):
         user_id = serializer.validated_data['user_id']
         restaurant = serializer.validated_data['restaurant_id']
         order_value = serializer.validated_data['order_value']
+        useWallet = serializer.validated_data['useWallet']
         # Extract other fields from the serializer
 
         try:
-            user = User.objects.get(id=user_id)
+            user = UserMod.objects.get(id=user_id)
 
             if useWallet and user.account_balance < order_value:
                 return Response({'message': 'Insufficient account balance'}, status=status.HTTP_400_BAD_REQUEST)
@@ -74,7 +75,42 @@ class CheckoutByUserIdView(generics.CreateAPIView):
 
 
             return Response({'message': 'Checkout successful'}, status=status.HTTP_200_OK)
-        except User.DoesNotExist:
+        except user.DoesNotExist:
             return Response({'message': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
-        except Restaurant.DoesNotExist:
+        except restaurant.DoesNotExist:
             return Response({'message': 'Restaurant not found'}, status=status.HTTP_404_NOT_FOUND)
+        
+
+class UndoCheckoutByOrderIDView(generics.CreateAPIView):
+    serializer_class = UndoCheckoutSerializer
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        order_id = serializer.validated_data['order_id']
+        print(order_id)
+        try:
+            order = Order.objects.get(OrderID=order_id)
+            print(order)
+            user_id = order.CustomerID
+            print(type(user_id))
+            print(user_id)
+            user = UserMod.objects.get(UserID=user_id)
+            print(user)
+            transactionID = order.TransactionID
+            print(transactionID)
+            if transactionID is not None:
+                payment_details = PaymentHistory.objects.get(TransactionID=transactionID)
+                user.amount += payment_details.Amount
+                user.save()
+                payee = order.RestaurantID
+                restaurant = UserMod.objects.get(UserID = payee)
+                restaurant.amount -= payment_details.Amount
+                restaurant.save()
+            order.status = OrderStatus.CANCELLED
+            order.save()
+            return Response({'message': 'Undo Checkout successful'}, status=status.HTTP_200_OK)
+        except UserMod.DoesNotExist:
+            return Response({'message': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+        except Order.DoesNotExist:
+            return Response({'message': 'Order not found'}, status=status.HTTP_404_NOT_FOUND)

@@ -1,3 +1,4 @@
 class OrderStatus:
     ACTIVE = 'active'
-    FREEZE = 'freezed'
+    FREEZED = 'freezed'
+    CANCELLED = 'cancelled'

@@ -23,3 +23,7 @@ class CheckoutSerializer(serializers.Serializer):
     restaurant_id = serializers.IntegerField()
     order_value = serializers.DecimalField(max_digits=10, decimal_places=2)
     useWallet = serializers.BooleanField()
+
+class UndoCheckoutSerializer(serializers.Serializer):
+    order_id = serializers.IntegerField()
+

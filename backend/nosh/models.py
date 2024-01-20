@@ -13,7 +13,7 @@ class Order(models.Model):
     DeliveredAt = models.DateTimeField(null=True, blank=True)
     RestaurantID = models.IntegerField()
 
-class User(models.Model):
+class UserMod(models.Model):
     UserID = models.AutoField(primary_key=True)
     first_name = models.TextField()
     last_name = models.TextField()
