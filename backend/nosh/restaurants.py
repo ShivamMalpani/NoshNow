@@ -2,7 +2,7 @@
 from rest_framework import generics, status
 from rest_framework.response import Response
 from .models import Order, UserMod, PaymentHistory
-from .serializers import OrderSerializer, OrderHistorySerializer, FreezeOrderSerializer, CheckoutSerializer, UndoCheckoutSerializer, PaymentHistorySerializer
+from .serializers import OrderSerializer, OrderHistorySerializer, FreezeOrderSerializer, CheckoutSerializer, UndoCheckoutSerializer, PaymentHistorySerializer, ViewWalletSerializer
 from .enum import OrderStatus
 
 
@@ -123,3 +123,12 @@ class PaymentHistoryView(generics.ListAPIView):
         UserID = self.request.query_params.get('user_id')
         print(UserID)
         return PaymentHistory.objects.filter(UserID=UserID)
+    
+class ViewWalletView(generics.RetrieveAPIView):
+    serializer_class = ViewWalletSerializer
+    queryset = UserMod.objects.all()
+
+    def get_object(self):
+        user_id = self.request.query_params.get('user_id')
+        user = generics.get_object_or_404(UserMod, UserID=user_id)
+        return user

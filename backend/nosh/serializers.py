@@ -33,3 +33,6 @@ class PaymentHistorySerializer(serializers.Serializer):
     Payee = serializers.IntegerField()
     Amount = serializers.IntegerField()
     Timestamp = serializers.DateTimeField()
+
+class ViewWalletSerializer(serializers.Serializer):
+    amount = serializers.DecimalField(max_digits=10, decimal_places=2, read_only=True)
