@@ -12,5 +12,11 @@ def api_root(request, format=None):
             "restaurant_list": reverse(
                 "restaurant_list", request=request, format=format
             ),
+            "item_list": reverse(
+                "item_list", args=[1], request=request, format=format
+            ),
+            "add_cart": reverse(
+                "add_cart", request=request, format=format
+            ),
         }
     )
