@@ -3,14 +3,21 @@ from rest_framework import serializers
 from .models import Order, Restaurant, Item
 
 class RestaurantListSerializer(serializers.ModelSerializer):
+    is_open = serializers.BooleanField(read_only=True)
+
     class Meta:
         model = Restaurant
-        fields = ['id', 'image', 'address', 'value', 'rating']
+        fields = ['id', 'name', 'image', 'address', 'value', 'rating', 'is_open']
 
 class ItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = Item
         exclude = ['restaurant_id']
+
+class CartSerializer(serializers.Serializer):
+    userID = serializers.IntegerField()
+    item_id = serializers.IntegerField()
+    quantity = serializers.IntegerField()
 
 class OrderSerializer(serializers.ModelSerializer):
     class Meta:
