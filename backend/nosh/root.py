@@ -21,5 +21,8 @@ def api_root(request, format=None):
             "clear_cart": reverse(
                 "clear_cart", request=request, format=format
             ),
+            "view_cart": reverse(
+                "view_cart", args=[1], request=request, format=format
+            ),
         }
     )
