@@ -17,7 +17,7 @@ class Restaurant(models.Model):
 
 class Item(models.Model):
     name = models.CharField(max_length=255)
-    cost = models.IntegerField()
+    cost = models.IntegerField(default=0)
     description = models.TextField()
     restaurant_id = models.ForeignKey(Restaurant, on_delete=models.CASCADE)
     instant_item = models.BooleanField()
