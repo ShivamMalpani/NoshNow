@@ -55,3 +55,10 @@ class AddCartView(APIView):
         else:
             Cart.insert_one({"_id": userID, "item_list": {str(data["item_id"]): data["quantity"]}})
             return Response("Success", status=status.HTTP_200_OK)
+        
+
+class ClearCartView(APIView):
+    def post(self, request):
+        userID = str(self.request.data.get("userID"))
+        Cart.delete_one({"_id": userID})
+        return Response("success")
