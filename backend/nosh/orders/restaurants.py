@@ -1,9 +1,9 @@
 # views.py
 from rest_framework import generics, status
 from rest_framework.response import Response
-from .models import Order, UserMod, PaymentHistory
-from .serializers import OrderSerializer, OrderHistorySerializer, FreezeOrderSerializer, CheckoutSerializer, UndoCheckoutSerializer, PaymentHistorySerializer, ViewWalletSerializer
-from .enum import OrderStatus
+from ..models import Order, UserMod, PaymentHistory
+from ..serializers import OrderSerializer, OrderHistorySerializer, FreezeOrderSerializer, CheckoutSerializer, UndoCheckoutSerializer, PaymentHistorySerializer, ViewWalletSerializer
+from ..enum import OrderStatus
 
 
 class ActiveOrderListView(generics.ListAPIView):
