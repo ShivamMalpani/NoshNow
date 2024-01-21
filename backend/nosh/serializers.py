@@ -1,11 +1,16 @@
 # serializers.py
 from rest_framework import serializers
-from .models import Order, Restaurant
+from .models import Order, Restaurant, Item
 
 class RestaurantListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Restaurant
         fields = ['id', 'image', 'address', 'value', 'rating']
+
+class ItemSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Item
+        exclude = ['restaurant_id']
 
 class OrderSerializer(serializers.ModelSerializer):
     class Meta:
