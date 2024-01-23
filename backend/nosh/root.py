@@ -36,5 +36,8 @@ def api_root(request, format=None):
             "delete_item": reverse(
                 "delete_item", request=request, format=format
             ),
+            "view_item": reverse(
+                "view_item", args=[1], request=request, format=format
+            ),
         }
     )

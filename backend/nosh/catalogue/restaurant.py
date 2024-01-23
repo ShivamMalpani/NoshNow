@@ -75,3 +75,9 @@ class RemoveItemView(APIView):
 
         item.delete()
         return Response({'message': 'Item removed successfully'}, status=status.HTTP_200_OK)
+
+
+class ViewItemAPIView(generics.RetrieveAPIView):
+    queryset = Item.objects.all()
+    serializer_class = ItemSerializer
+    lookup_field = 'id'
