@@ -2,12 +2,13 @@ from rest_framework import generics
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from ..models import Restaurant, Item
-from ..serializers import RestaurantListSerializer, ItemSerializer
+from ..models import Restaurant, Item, UserMod
+from ..serializers import RestaurantListSerializer, ItemSerializer, OwnerSerializer
 from ..connection import mydb
 from django.utils import timezone
 
 Cart = mydb["Cart"]
+Feedback = mydb["Feedback"]
 
 
 class RestaurantListView(generics.ListAPIView):
@@ -35,6 +36,34 @@ class ItemListView(APIView):
         data = item_serializer.data
 
         return Response(data, status=status.HTTP_200_OK)
+
+
+class ViewRestaurantView(APIView):
+    def get(self, request, restaurant_id):
+        try:
+            restaurant = Restaurant.objects.get(id=restaurant_id)
+        except Restaurant.DoesNotExist:
+            return Response({'error': 'Restaurant not found'}, status=status.HTTP_404_NOT_FOUND)
+        
+        owner = restaurant.owner_id
+        owner_details = UserMod.objects.get(pk=owner)
+        owner_serializer = OwnerSerializer(owner_details)
+        data = {}
+        data["owner"] = owner_serializer.data
+
+        entry = Feedback.find_one({"_id": str(restaurant_id)})
+        data["feedback_list"] = []
+        for i in entry["feedback_list"].keys():
+            user = UserMod.objects.get(pk=int(i))
+            feedback_dict = {
+                "user" : user.first_name+" "+user.last_name,
+                "feedback" : entry["feedback_list"][i],
+                "id" : int(i)
+            }
+            data["feedback_list"].append(feedback_dict)
+        
+        return Response(data, status=status.HTTP_200_OK)
+
     
 
 class AddCartView(APIView):

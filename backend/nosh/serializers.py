@@ -1,6 +1,6 @@
 # serializers.py
 from rest_framework import serializers
-from .models import Order, Restaurant, Item
+from .models import Order, Restaurant, Item, UserMod
 
 class RestaurantListSerializer(serializers.ModelSerializer):
     is_open = serializers.BooleanField(read_only=True)
@@ -13,6 +13,11 @@ class ItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = Item
         exclude = ['restaurant_id']
+
+class OwnerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserMod
+        fields = ['UserID', 'first_name', 'last_name', 'mobile_no', 'email']
 
 class CartSerializer(serializers.Serializer):
     userID = serializers.IntegerField()
