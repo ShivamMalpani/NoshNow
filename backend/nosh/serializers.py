@@ -12,7 +12,7 @@ class RestaurantListSerializer(serializers.ModelSerializer):
 class ItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = Item
-        exclude = ['restaurant_id']
+        fields = '__all__'
 
 class OwnerSerializer(serializers.ModelSerializer):
     class Meta:
