@@ -39,6 +39,7 @@ class UpdateItemView(APIView):
             item = Item.objects.get(id=item_id)
         except Item.DoesNotExist:
             return Response({'error': 'Item not found for the given item ID'}, status=status.HTTP_404_NOT_FOUND)
+        
         if restaurant != item.restaurant_id:
             return Response({'error': 'Restaurant ID of the user does not match the restaurant ID of the item'},
                             status=status.HTTP_403_FORBIDDEN)
@@ -51,3 +52,26 @@ class UpdateItemView(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+
+class RemoveItemView(APIView):
+    def post(self, request):
+        userID = request.data.get("userID")
+        item_id = request.data.get("itemID")
+
+        try:
+            restaurant = Restaurant.objects.get(owner_id=userID)
+        except Restaurant.DoesNotExist:
+            return Response({'error': 'Restaurant not found for the given user ID'}, status=status.HTTP_404_NOT_FOUND)
+
+        try:
+            item = Item.objects.get(id=item_id)
+        except Item.DoesNotExist:
+            return Response({'error': 'Item not found for the given item ID'}, status=status.HTTP_404_NOT_FOUND)
+        
+        if restaurant != item.restaurant_id:
+            return Response({'error': 'Restaurant ID of the user does not match the restaurant ID of the item'},
+                            status=status.HTTP_403_FORBIDDEN)
+
+        item.delete()
+        return Response({'message': 'Item removed successfully'}, status=status.HTTP_200_OK)

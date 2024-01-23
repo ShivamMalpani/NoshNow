@@ -2,7 +2,7 @@
 from django.urls import path, include
 from .root import api_root
 from .catalogue.students import RestaurantListView, ItemListView, AddCartView, ClearCartView, ViewCartView, ViewRestaurantView
-from .catalogue.restaurant import AddItemView, UpdateItemView
+from .catalogue.restaurant import AddItemView, UpdateItemView, RemoveItemView
 from .orders.restaurants import ActiveOrderListView, OrderHistoryView, FreezeOrderView, CheckoutByUserIdView, UndoCheckoutByOrderIDView, PaymentHistoryView, ViewWalletView
 
 urlpatterns = [
@@ -15,6 +15,7 @@ urlpatterns = [
     path('api/catalogue/students/view_cart/<int:userID>', ViewCartView.as_view(), name='view_cart'),
     path('api/catalogue/restaurant/add_item', AddItemView.as_view(), name='add_item'),
     path('api/catalogue/restaurant/update_item', UpdateItemView.as_view(), name='update_item'),
+    path('api/catalogue/restaurant/delete_item', RemoveItemView.as_view(), name='delete_item'),
     path('api/restaurants/active_orders/', ActiveOrderListView.as_view(), name='active-order-list'),
     path('api/restaurants/order_history/', OrderHistoryView.as_view(), name='order-history'),
     path('api/restaurants/freeze_order/', FreezeOrderView.as_view(), name='freeze-order'),
