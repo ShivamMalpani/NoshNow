@@ -20,10 +20,11 @@ class Item(models.Model):
     cost = models.IntegerField(default=0)
     description = models.TextField()
     restaurant_id = models.ForeignKey(Restaurant, on_delete=models.CASCADE)
-    instant_item = models.BooleanField()
-    quantity = models.IntegerField(null=True, blank=True)
+    instant_item = models.BooleanField(default=False)
+    available = models.BooleanField(default=True)
+    quantity = models.IntegerField(default=0)
     image = models.URLField(null=True, default=None)
-    rating = models.FloatField(null=True)
+    rating = models.FloatField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
