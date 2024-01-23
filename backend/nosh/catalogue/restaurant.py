@@ -81,3 +81,35 @@ class ViewItemAPIView(generics.RetrieveAPIView):
     queryset = Item.objects.all()
     serializer_class = ItemSerializer
     lookup_field = 'id'
+
+
+class UpdateItemStatusView(APIView):
+    def post(self, request):
+        userID = request.data.get("userID")
+        item_id = request.data.get("itemID")
+        available = request.data.get("available")
+
+        try:
+            restaurant = Restaurant.objects.get(owner_id=userID)
+        except Restaurant.DoesNotExist:
+            return Response({'error': 'Restaurant not found for the given user ID'}, status=status.HTTP_404_NOT_FOUND)
+    
+        try:
+            item = Item.objects.get(id=item_id)
+        except Item.DoesNotExist:
+            return Response({'error': 'Item not found for the given item ID'}, status=status.HTTP_404_NOT_FOUND)
+        
+        if restaurant != item.restaurant_id:
+            return Response({'error': 'Restaurant ID of the user does not match the restaurant ID of the item'},
+                            status=status.HTTP_403_FORBIDDEN)
+
+        item_data = {
+            "available" : available,
+            "restaurant_id" : item.restaurant_id.id
+        }
+        serializer = ItemUpdateSerializer(instance=item, data=item_data)
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
