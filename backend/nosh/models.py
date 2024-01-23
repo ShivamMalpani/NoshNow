@@ -21,6 +21,7 @@ class Item(models.Model):
     description = models.TextField()
     restaurant_id = models.ForeignKey(Restaurant, on_delete=models.CASCADE)
     instant_item = models.BooleanField(default=False)
+    available = models.BooleanField(default=True)
     quantity = models.IntegerField(default=0)
     image = models.URLField(null=True, default=None)
     rating = models.FloatField(null=True, blank=True)

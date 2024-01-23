@@ -14,6 +14,13 @@ class ItemSerializer(serializers.ModelSerializer):
         model = Item
         fields = '__all__'
 
+class ItemUpdateSerializer(serializers.ModelSerializer):
+    name = serializers.CharField(required=False)
+    description = serializers.CharField(required=False)
+    class Meta:
+        model = Item
+        fields = '__all__'
+
 class OwnerSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserMod
