@@ -39,5 +39,11 @@ def api_root(request, format=None):
             "view_item": reverse(
                 "view_item", args=[1], request=request, format=format
             ),
+            "update_item_status": reverse(
+                "update_item_status", request=request, format=format
+            ),
+            "update_item_quantity": reverse(
+                "update_item_quantity", request=request, format=format
+            ),
         }
     )
