@@ -1,6 +1,7 @@
 # serializers.py
 from rest_framework import serializers
-from .models import Order, Restaurant, Item, UserMod
+from .models import Order, Restaurant, Item, UserMod, PaymentHistory
+from .enum import OrderType, PaymentType, Address
 
 class RestaurantListSerializer(serializers.ModelSerializer):
     is_open = serializers.BooleanField(read_only=True)
@@ -31,6 +32,17 @@ class CartSerializer(serializers.Serializer):
     item_id = serializers.IntegerField()
     quantity = serializers.IntegerField()
 
+class OrderInputSerializer(serializers.Serializer):
+    userID = serializers.IntegerField()
+    paymentType = serializers.ChoiceField(choices=[(pt.value, pt.name) for pt in PaymentType])
+    orderType = serializers.ChoiceField(choices=[(ot.value, ot.name) for ot in OrderType])
+    Address = serializers.ChoiceField(choices=[(ot.value, ot.name) for ot in Address])
+
+class CreateOrderSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Order
+        fields = ['CustomerID', 'Address', 'Status', 'TransactionID', 'PaymentStatus', 'PaymentType', 'RestaurantID']
+
 class OrderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
@@ -56,12 +68,10 @@ class CheckoutSerializer(serializers.Serializer):
 class UndoCheckoutSerializer(serializers.Serializer):
     order_id = serializers.IntegerField()
 
-class PaymentHistorySerializer(serializers.Serializer):
-    TransactionID = serializers.IntegerField()
-    UserID = serializers.IntegerField()
-    Payee = serializers.IntegerField()
-    Amount = serializers.IntegerField()
-    Timestamp = serializers.DateTimeField()
+class PaymentHistorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PaymentHistory
+        fields = '__all__'
 
 class ViewWalletSerializer(serializers.Serializer):
     amount = serializers.DecimalField(max_digits=10, decimal_places=2, read_only=True)

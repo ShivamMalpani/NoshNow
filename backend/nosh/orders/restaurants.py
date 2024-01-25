@@ -11,7 +11,7 @@ class ActiveOrderListView(generics.ListAPIView):
 
     def get_queryset(self):
         restaurant_id = self.request.query_params.get('restaurantID')
-        return Order.objects.filter(RestaurantID=restaurant_id, Status=OrderStatus.ACTIVE)
+        return Order.objects.filter(RestaurantID=restaurant_id, Status=OrderStatus.ACTIVE.value)
 
 
 class OrderHistoryView(generics.ListAPIView):
@@ -36,11 +36,11 @@ class FreezeOrderView(generics.CreateAPIView):
         try:
             order = Order.objects.get(OrderID=order_id, RestaurantID=restaurant_id)
 
-            if freeze and order.Status == OrderStatus.ACTIVE:
-                order.Status = OrderStatus.FREEZED
+            if freeze and order.Status == OrderStatus.ACTIVE.value:
+                order.Status = OrderStatus.FREEZED.value
                 order.save()
-            elif freeze is False and order.Status == OrderStatus.FREEZED:
-                order.Status = OrderStatus.ACTIVE
+            elif freeze is False and order.Status == OrderStatus.FREEZED.value:
+                order.Status = OrderStatus.ACTIVE.value
                 order.save()
 
             return Response({'message': 'Success'}, status=status.HTTP_200_OK)
@@ -107,7 +107,7 @@ class UndoCheckoutByOrderIDView(generics.CreateAPIView):
                 restaurant = UserMod.objects.get(UserID = payee)
                 restaurant.amount -= payment_details.Amount
                 restaurant.save()
-            order.status = OrderStatus.CANCELLED
+            order.status = OrderStatus.CANCELLED.value
             order.save()
             return Response({'message': 'Undo Checkout successful'}, status=status.HTTP_200_OK)
         except UserMod.DoesNotExist:

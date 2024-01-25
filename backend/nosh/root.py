@@ -45,5 +45,8 @@ def api_root(request, format=None):
             "update_item_quantity": reverse(
                 "update_item_quantity", request=request, format=format
             ),
+            "create_order": reverse(
+                "create_order", request=request, format=format
+            ),
         }
     )
