@@ -16,6 +16,7 @@ class OrderType(Enum):
 class PaymentStatus(Enum):
     PAID = 'paid'
     NOT_PAID = 'not_paid'
+    REFUND = 'refund'
 
 
 class PaymentType(Enum):
@@ -28,3 +29,8 @@ class Address(Enum):
     KANHAR = 'kanhar'
     INDRAVATI = 'indravati'
     SHIVNATH = 'shivnath'
+
+
+class PaymentReason(Enum):
+    ORDER_CANCELLATION = 'order_cancellation'
+    ORDER_PLACE = 'order_place'

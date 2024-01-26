@@ -41,7 +41,7 @@ class OrderInputSerializer(serializers.Serializer):
 class CreateOrderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
-        fields = ['CustomerID', 'Address', 'Status', 'TransactionID', 'PaymentStatus', 'PaymentType', 'RestaurantID']
+        fields = ['CustomerID', 'Address', 'Status', 'PaymentStatus', 'PaymentType', 'RestaurantID', 'Amount']
 
 class OrderSerializer(serializers.ModelSerializer):
     class Meta:

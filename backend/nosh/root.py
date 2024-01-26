@@ -48,5 +48,8 @@ def api_root(request, format=None):
             "create_order": reverse(
                 "create_order", request=request, format=format
             ),
+            "cancel_order": reverse(
+                "cancel_order", request=request, format=format
+            ),
         }
     )
