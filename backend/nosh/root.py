@@ -54,5 +54,8 @@ def api_root(request, format=None):
             "view_order_history": reverse(
                 "view_order_history", args=[1], request=request, format=format
             ),
+            "view_order": reverse(
+                "view_order", args=[1, 1], request=request, format=format
+            ),
         }
     )

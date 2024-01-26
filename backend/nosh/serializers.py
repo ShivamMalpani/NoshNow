@@ -3,6 +3,11 @@ from rest_framework import serializers
 from .models import Order, Restaurant, Item, UserMod, PaymentHistory
 from .enum import OrderType, PaymentType, Address
 
+class EnumField(serializers.Field):
+    def to_representation(self, obj):
+        return obj.value
+    
+
 class RestaurantListSerializer(serializers.ModelSerializer):
     is_open = serializers.BooleanField(read_only=True)
 
@@ -74,6 +79,8 @@ class UndoCheckoutSerializer(serializers.Serializer):
     order_id = serializers.IntegerField()
 
 class PaymentHistorySerializer(serializers.ModelSerializer):
+    Reason = EnumField()
+    
     class Meta:
         model = PaymentHistory
         fields = '__all__'

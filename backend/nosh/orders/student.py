@@ -175,3 +175,39 @@ class StudentOrderHistoryView(generics.ListAPIView):
     def get_queryset(self):
         userID = self.kwargs.get('userID')
         return Order.objects.filter(CustomerID=userID)
+
+
+class ViewOrderView(APIView):
+    def get(self, request, orderID, userID):
+
+        try:
+            order = Order.objects.get(OrderID=orderID)
+        except Order.DoesNotExist:
+            return Response("Order does not exist", status=status.HTTP_404_NOT_FOUND)
+        
+        if (order.CustomerID != userID):
+            return Response("Unauthorized user", status=status.HTTP_403_FORBIDDEN)
+        
+        data= {}
+        order_details = OrderHistorySerializer(order)
+        data["order"] = order_details.data
+
+        entry = OrderDB.find_one({"_id": str(orderID)})
+        if entry is not None:
+            data["items"] = []
+            for i in entry["order_list"].keys():
+                item = Item.objects.get(pk = int(i))
+                amount = entry["order_list"][i]*(item.cost)
+                item_dict = {
+                    "id" : i,
+                    "name" : item.name,
+                    "quantity" : entry["order_list"][i],
+                    "amount" : amount
+                }
+                data["items"].append(item_dict)
+        
+        transactions = PaymentHistory.objects.filter(OrderID=orderID)
+        transaction_details = PaymentHistorySerializer(transactions, many=True)
+        data["transactions"] = transaction_details.data
+
+        return Response(data, status=status.HTTP_200_OK)
