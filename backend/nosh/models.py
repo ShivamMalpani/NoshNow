@@ -43,7 +43,7 @@ class Order(models.Model):
     DeliveredBy = models.IntegerField(null=True, blank=True)
     CreatedAt = models.DateTimeField(auto_now_add=True)
     DeliveredAt = models.DateTimeField(null=True, blank=True)
-    RestaurantID = models.IntegerField()
+    RestaurantID = models.ForeignKey(Restaurant, on_delete=models.CASCADE)
 
 class UserMod(models.Model):
     UserID = models.AutoField(primary_key=True)
