@@ -50,9 +50,14 @@ class OrderSerializer(serializers.ModelSerializer):
 
 
 class OrderHistorySerializer(serializers.ModelSerializer):
+    RestaurantName = serializers.SerializerMethodField()
+
     class Meta:
         model = Order
-        fields = ['OrderID', 'CustomerID', 'Address', 'Status', 'PaymentStatus', 'DeliveredBy', 'CreatedAt', 'DeliveredAt', 'RestaurantID']
+        fields = ['OrderID', 'CustomerID', 'Address', 'Status', 'Amount', 'PaymentStatus', 'PaymentType', 'DeliveredBy', 'CreatedAt', 'DeliveredAt', 'RestaurantID', 'RestaurantName']
+    
+    def get_RestaurantName(self, obj):
+        return obj.RestaurantID.name
 
 class FreezeOrderSerializer(serializers.Serializer):
     OrderID = serializers.IntegerField()
