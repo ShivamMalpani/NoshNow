@@ -76,7 +76,7 @@ class AddCartView(APIView):
             item = Item.objects.get(id=data["item_id"])
         except Item.DoesNotExist:
             return Response({'error': 'Item not found'}, status=status.HTTP_404_NOT_FOUND)
-
+        
         if entry is not None:
             check_item = list(entry["item_list"].keys())[0]
             check_item_restaurant = Item.objects.get(pk=int(check_item)).restaurant_id
@@ -84,8 +84,8 @@ class AddCartView(APIView):
             if (check_item_restaurant != current_restaurant):
                 return Response("Wrong Restaurant", status=status.HTTP_400_BAD_REQUEST)
             
-            entry["item_list"][data["item_id"]] = data["quantity"]
-            Cart.update_one({"_id": userID}, {"$set": {"item_list": {str(data["item_id"]): data["quantity"]}}})
+            entry["item_list"][str(data["item_id"])] = data["quantity"]
+            Cart.update_one({"_id": userID}, {"$set": {"item_list": entry["item_list"]}})
             return Response("Success", status=status.HTTP_200_OK)
         else:
             Cart.insert_one({"_id": userID, "item_list": {str(data["item_id"]): data["quantity"]}})
