@@ -27,6 +27,7 @@ urlpatterns = [
     path('api/order/student/view_order/<int:orderID>/<int:userID>/', ViewOrderView.as_view(), name='view_order'),
     path('api/restaurants/active_orders/', ActiveOrderListView.as_view(), name='active-order-list'),
     path('api/checkout_by_user/', CheckoutByUserIdView.as_view(), name='checkout-by-user-id'),
+    path('api/undo_checkout_by_order/', UndoCheckoutByOrderIdView.as_view(), name='undo-checkout-by-order-id'),
     path('api/restaurants/order_history/', OrderHistoryView.as_view(), name='order-history'),
     path('api/restaurants/freeze_order/', FreezeOrderView.as_view(), name='freeze-order'),
     # path('api/restaurants/checkout/', CheckoutByUserIdView.as_view(), name='checkout-by-user-id'),
