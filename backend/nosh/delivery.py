@@ -35,7 +35,7 @@ class UndoCheckoutByOrderIdView(generics.CreateAPIView):
         serializer.is_valid(raise_exception=True)
         order_id = serializer.validated_data['order_id']
         try:
-            order = Order.objects.get(OrderID=order_id, Status=OrderStatus.IN_TRANSIT.value)
+            order = Order.objects.get(OrderID=order_id, Status=OrderStatus.PENDING_ACCEPTANCE.value)
             order.Status = OrderStatus.FREEZED.value
             order.DeliveredBy = None  
             order.DeliveredAt = None  
@@ -53,8 +53,25 @@ class ViewCheckoutByUserIdView(generics.CreateAPIView):
         serializer.is_valid(raise_exception=True)
         user_id = serializer.validated_data['user_id']
         try:
-            orders = Order.objects.filter(DeliveredBy=user_id, Status='inTransit')
+            orders = Order.objects.filter(DeliveredBy=user_id, Status=OrderStatus.PENDING_ACCEPTANCE.value)
             serialized_data = ViewCheckoutByUserIdSerializer2(orders, many=True).data
             return Response(serialized_data, status=status.HTTP_200_OK)
         except Order.DoesNotExist:
             return Response({'message': 'No orders found'}, status=status.HTTP_404_NOT_FOUND)
+        
+class ConfirmDeliveryByStudentIdView(generics.CreateAPIView):
+    serializer_class = ConfirmDeliverySerializer
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        user_id = serializer.validated_data['user_id']
+
+        try:
+            orders = Order.objects.filter(DeliveredBy=user_id, Status=OrderStatus.PENDING_ACCEPTANCE.value)
+            print(orders.count())
+            orders.update(Status=OrderStatus.IN_TRANSIT.value)
+            return Response({'message': 'Delivery confirmed successfully'}, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({'message': e})

@@ -6,6 +6,7 @@ class OrderStatus(Enum):
     CANCELLED = 'cancelled'
     DELIVERED = 'delivered'
     IN_TRANSIT = 'inTransit'
+    PENDING_ACCEPTANCE = 'pending_acceptance'
 
 
 class OrderType(Enum):

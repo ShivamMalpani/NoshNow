@@ -102,3 +102,6 @@ class ViewCheckoutByUserIdSerializer2(serializers.ModelSerializer):
     class Meta:
         model = Order
         fields = ['OrderID', 'CustomerID', 'Address', 'Status', 'PaymentStatus', 'CreatedAt', 'RestaurantID']
+
+class ConfirmDeliverySerializer(serializers.Serializer):
+    user_id = serializers.IntegerField()
