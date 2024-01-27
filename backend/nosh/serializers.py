@@ -7,6 +7,10 @@ class EnumField(serializers.Field):
     def to_representation(self, obj):
         return obj.value
     
+class CheckoutByUserIdSerializer(serializers.Serializer):
+    restaurant_id = serializers.IntegerField()
+    order_ids = serializers.ListField(child=serializers.IntegerField())
+
 
 class RestaurantListSerializer(serializers.ModelSerializer):
     is_open = serializers.BooleanField(read_only=True)
@@ -69,14 +73,14 @@ class FreezeOrderSerializer(serializers.Serializer):
     RestaurantID = serializers.IntegerField()
     freeze = serializers.BooleanField()
 
-class CheckoutSerializer(serializers.Serializer):
-    user_id = serializers.IntegerField()
-    restaurant_id = serializers.IntegerField()
-    order_value = serializers.DecimalField(max_digits=10, decimal_places=2)
-    useWallet = serializers.BooleanField()
+# class CheckoutSerializer(serializers.Serializer):
+#     user_id = serializers.IntegerField()
+#     restaurant_id = serializers.IntegerField()
+#     order_value = serializers.DecimalField(max_digits=10, decimal_places=2)
+#     useWallet = serializers.BooleanField()
 
-class UndoCheckoutSerializer(serializers.Serializer):
-    order_id = serializers.IntegerField()
+# class UndoCheckoutSerializer(serializers.Serializer):
+#     order_id = serializers.IntegerField()
 
 class PaymentHistorySerializer(serializers.ModelSerializer):
     Reason = EnumField()

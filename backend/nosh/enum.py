@@ -4,6 +4,8 @@ class OrderStatus(Enum):
     ACTIVE = 'active'
     FREEZED = 'freezed'
     CANCELLED = 'cancelled'
+    DELIVERED = 'delivered'
+    IN_TRANSIT = 'inTransit'
 
 
 class OrderType(Enum):

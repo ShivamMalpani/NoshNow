@@ -4,7 +4,8 @@ from .root import api_root
 from .catalogue.students import RestaurantListView, ItemListView, AddCartView, ClearCartView, ViewCartView, ViewRestaurantView
 from .catalogue.restaurant import AddItemView, UpdateItemView, RemoveItemView, ViewItemAPIView, UpdateItemStatusView, UpdateItemQuantityView
 from .orders.student import CreateOrderView, CancelOrderView, StudentOrderHistoryView, ViewOrderView
-from .orders.restaurants import ActiveOrderListView, OrderHistoryView, FreezeOrderView, CheckoutByUserIdView, UndoCheckoutByOrderIDView, PaymentHistoryView, ViewWalletView
+from .orders.restaurants import ActiveOrderListView, OrderHistoryView, FreezeOrderView, PaymentHistoryView, ViewWalletView
+from .delivery import *
 
 urlpatterns = [
     path("", api_root),
@@ -25,10 +26,11 @@ urlpatterns = [
     path('api/order/student/view_order_history/<int:userID>', StudentOrderHistoryView.as_view(), name='view_order_history'),
     path('api/order/student/view_order/<int:orderID>/<int:userID>/', ViewOrderView.as_view(), name='view_order'),
     path('api/restaurants/active_orders/', ActiveOrderListView.as_view(), name='active-order-list'),
+    path('api/checkout_by_user/', CheckoutByUserIdView.as_view(), name='checkout-by-user-id'),
     path('api/restaurants/order_history/', OrderHistoryView.as_view(), name='order-history'),
     path('api/restaurants/freeze_order/', FreezeOrderView.as_view(), name='freeze-order'),
-    path('api/restaurants/checkout/', CheckoutByUserIdView.as_view(), name='checkout-by-user-id'),
-    path('api/restaurants/undo_checkout/', UndoCheckoutByOrderIDView.as_view(), name='undo-checkout-by-order-id'),
+    # path('api/restaurants/checkout/', CheckoutByUserIdView.as_view(), name='checkout-by-user-id'),
+    # path('api/restaurants/undo_checkout/', UndoCheckoutByOrderIDView.as_view(), name='undo-checkout-by-order-id'),
     path('api/restaurants/payment_history/', PaymentHistoryView.as_view(), name='payment-history'),
     path('api/restaurants/view_wallet/', ViewWalletView.as_view(), name='view-wallet'),
 ]
