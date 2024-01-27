@@ -30,23 +30,31 @@ class CheckoutByUserIdView(generics.CreateAPIView):
 
 class UndoCheckoutByOrderIdView(generics.CreateAPIView):
     serializer_class = UndoCheckoutByOrderIdSerializer
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        order_id = serializer.validated_data['order_id']
+        try:
+            order = Order.objects.get(OrderID=order_id, Status=OrderStatus.IN_TRANSIT.value)
+            order.Status = OrderStatus.FREEZED.value
+            order.DeliveredBy = None  
+            order.DeliveredAt = None  
+            order.save()
+            return Response({'message': 'Undo Checkout successful'}, status=status.HTTP_200_OK)
+        except Order.DoesNotExist:
+            return Response({'message': 'Order not found or status is not IN_TRANSIT'}, status=status.HTTP_404_NOT_FOUND)
+        
+class ViewCheckoutByUserIdView(generics.CreateAPIView):
+    serializer_class = ViewCheckoutByUserIdSerializer
+    queryset = Order.objects.all()
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-
-        order_id = serializer.validated_data['order_id']
-
+        user_id = serializer.validated_data['user_id']
         try:
-            # Check whether the order status is IN_TRANSIT
-            order = Order.objects.get(OrderID=order_id, Status=OrderStatus.IN_TRANSIT.value)
-
-            # Change the order status to freezed
-            order.Status = OrderStatus.FREEZED.value
-            order.DeliveredBy = None  # Delete the entry of deliveredBy
-            order.DeliveredAt = None  # Delete the entry of deliveredBy
-            order.save()
-
-            return Response({'message': 'Undo Checkout successful'}, status=status.HTTP_200_OK)
+            orders = Order.objects.filter(DeliveredBy=user_id, Status='inTransit')
+            serialized_data = ViewCheckoutByUserIdSerializer2(orders, many=True).data
+            return Response(serialized_data, status=status.HTTP_200_OK)
         except Order.DoesNotExist:
-            return Response({'message': 'Order not found or status is not IN_TRANSIT'}, status=status.HTTP_404_NOT_FOUND)
+            return Response({'message': 'No orders found'}, status=status.HTTP_404_NOT_FOUND)

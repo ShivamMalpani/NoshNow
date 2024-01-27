@@ -92,7 +92,13 @@ class PaymentHistorySerializer(serializers.ModelSerializer):
 class ViewWalletSerializer(serializers.Serializer):
     amount = serializers.DecimalField(max_digits=10, decimal_places=2, read_only=True)
 
-from rest_framework import serializers
-
 class UndoCheckoutByOrderIdSerializer(serializers.Serializer):
     order_id = serializers.IntegerField()
+
+class ViewCheckoutByUserIdSerializer(serializers.Serializer):
+    user_id = serializers.IntegerField()
+
+class ViewCheckoutByUserIdSerializer2(serializers.ModelSerializer):
+    class Meta:
+        model = Order
+        fields = ['OrderID', 'CustomerID', 'Address', 'Status', 'PaymentStatus', 'CreatedAt', 'RestaurantID']
