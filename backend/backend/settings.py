@@ -26,6 +26,7 @@ SECRET_KEY = 'django-insecure-*hg^oq-_hnesonx21fm!9zzoo^b0&pql#reno(9tlym4f3396w
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
+AUTH_USER_MODEL = 'nosh.CustomUser'
 
 
 # Application definition

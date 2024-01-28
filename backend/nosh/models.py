@@ -1,8 +1,19 @@
 # models.py
 from django.db import models
-from .enum import PaymentReason
+from django.contrib.auth.models import AbstractUser
+from .enum import PaymentReason, UserType
 
 REASON_CHOICES = [(reason.value, reason.name.replace('_', ' ').title()) for reason in PaymentReason]
+USER_CHOICES = [(user_type.value, user_type.name.replace('_', ' ').title()) for user_type in UserType]
+
+
+class CustomUser(AbstractUser):
+    user_type = models.CharField(max_length=50, choices=USER_CHOICES, null=True, blank=True)
+    mobile_no = models.CharField(max_length=10, null=True, blank=True)
+    created_on = models.DateTimeField(auto_now_add=True)
+    updated_on = models.DateTimeField(auto_now=True)
+    profile_pic = models.URLField(null=True, blank=True)
+    amount = models.IntegerField(default=0)
 
 class Restaurant(models.Model):
     name = models.CharField(max_length=255)
