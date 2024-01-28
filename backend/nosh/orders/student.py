@@ -71,7 +71,7 @@ class CreateOrderView(APIView):
                 "UserID" : userID,
                 "Payee" : restaurant.owner_id,
                 "Amount" : total_amount,
-                "Reason" : PaymentReason.ORDER_PLACE
+                "Reason" : PaymentReason.ORDER_PLACE.value
             }
             payment_history_serializer = PaymentHistorySerializer(data=transaction_dict)
             if payment_history_serializer.is_valid():
@@ -142,7 +142,7 @@ class CancelOrderView(APIView):
                 "Payee" : transaction.UserID,
                 "Amount" : transaction.Amount,
                 "OrderID" : transaction.OrderID.OrderID,
-                "Reason" : PaymentReason.ORDER_CANCELLATION
+                "Reason" : PaymentReason.ORDER_CANCELLATION.value
             }
             transaction_serializer = PaymentHistorySerializer(data = transaction_dict)
             if transaction_serializer.is_valid():

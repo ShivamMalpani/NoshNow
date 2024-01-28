@@ -2,10 +2,6 @@
 from rest_framework import serializers
 from .models import Order, Restaurant, Item, UserMod, PaymentHistory
 from .enum import OrderType, PaymentType, Address
-
-class EnumField(serializers.Field):
-    def to_representation(self, obj):
-        return obj.value
     
 class CheckoutByUserIdSerializer(serializers.Serializer):
     restaurant_id = serializers.IntegerField()
@@ -83,7 +79,6 @@ class FreezeOrderSerializer(serializers.Serializer):
 #     order_id = serializers.IntegerField()
 
 class PaymentHistorySerializer(serializers.ModelSerializer):
-    Reason = EnumField()
     
     class Meta:
         model = PaymentHistory
