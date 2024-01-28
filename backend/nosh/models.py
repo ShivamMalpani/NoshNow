@@ -1,7 +1,8 @@
 # models.py
 from django.db import models
-from enumfields import EnumField
 from .enum import PaymentReason
+
+REASON_CHOICES = [(reason.value, reason.name.replace('_', ' ').title()) for reason in PaymentReason]
 
 class Restaurant(models.Model):
     name = models.CharField(max_length=255)
@@ -66,7 +67,7 @@ class PaymentHistory(models.Model):
     Amount = models.IntegerField()
     Timestamp = models.DateTimeField(auto_now_add=True)
     OrderID = models.ForeignKey(Order, on_delete=models.CASCADE, null=True)
-    Reason = EnumField(PaymentReason, max_length=50)
+    Reason = models.CharField(max_length=50, choices=REASON_CHOICES)
 
     def __str__(self):
         return f'Transaction ID: {self.TransactionID}, Amount: {self.Amount}, Timestamp: {self.Timestamp}'

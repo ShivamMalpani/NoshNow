@@ -118,7 +118,9 @@ class ViewCartView(APIView):
                     "id" : i,
                     "name" : item.name,
                     "quantity" : entry["item_list"][i],
-                    "amount" : amount
+                    "amount" : amount,
+                    "image" : item.image,
+                    "rating" : item.rating
                 }
                 data["items"].append(item_dict)
             data["total_amount"] = total_amount
