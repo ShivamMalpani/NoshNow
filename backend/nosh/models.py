@@ -14,6 +14,14 @@ class CustomUser(AbstractUser):
     updated_on = models.DateTimeField(auto_now=True)
     profile_pic = models.URLField(null=True, blank=True)
     amount = models.IntegerField(default=0)
+    email_verified = models.BooleanField(default=False)
+
+
+class OTP(models.Model):
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
+    OTP = models.CharField(max_length=64)
+    expiration_time = models.DateTimeField()
+
 
 class Restaurant(models.Model):
     name = models.CharField(max_length=255)

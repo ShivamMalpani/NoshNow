@@ -1,6 +1,6 @@
 # serializers.py
 from rest_framework import serializers
-from .models import Order, Restaurant, Item, UserMod, PaymentHistory, CustomUser
+from .models import Order, Restaurant, Item, UserMod, PaymentHistory, CustomUser, OTP
 from .enum import OrderType, PaymentType, Address
     
 class CheckoutByUserIdSerializer(serializers.Serializer):
@@ -18,6 +18,12 @@ class CustomUserSerializer(serializers.ModelSerializer):
             'email': {'required': True},
             'user_type' : {'required' : True},
         }
+
+
+class OTPSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = OTP
+        fields = ['user', 'OTP', 'expiration_time']
 
 
 class RestaurantListSerializer(serializers.ModelSerializer):
