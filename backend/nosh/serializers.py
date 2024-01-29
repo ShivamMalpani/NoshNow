@@ -118,3 +118,6 @@ class ViewCheckoutByUserIdSerializer2(serializers.ModelSerializer):
 
 class ConfirmDeliverySerializer(serializers.Serializer):
     user_id = serializers.IntegerField()
+
+class DeliveredByUserIDSerializer(serializers.Serializer):
+    user_id = serializers.IntegerField()

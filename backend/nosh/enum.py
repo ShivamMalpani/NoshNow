@@ -5,6 +5,7 @@ class OrderStatus(Enum):
     FREEZED = 'freezed'
     CANCELLED = 'cancelled'
     DELIVERED = 'delivered'
+    DELIVERED_PERSON_REACHED = 'deliveryPersonReached'
     IN_TRANSIT = 'inTransit'
     PENDING_ACCEPTANCE = 'pending_acceptance'
 
