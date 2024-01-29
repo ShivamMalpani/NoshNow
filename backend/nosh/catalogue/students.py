@@ -17,8 +17,12 @@ class RestaurantListView(generics.ListAPIView):
     def get_queryset(self):
         current_time = timezone.now().time()
         queryset = Restaurant.objects.all()
-        for restaurant in queryset:
-            restaurant.is_open = restaurant.start_time <= current_time <= restaurant.end_time
+        is_open = self.request.query_params.get('is_open', None)
+        if is_open is not None:
+            is_open = is_open.lower() in ['true', '1']
+            for restaurant in queryset:
+                restaurant.is_open = restaurant.start_time <= current_time <= restaurant.end_time
+            queryset = [restaurant for restaurant in queryset if restaurant.is_open == is_open]
         return queryset
 
 
