@@ -77,3 +77,48 @@ class VerifyEmailOTP(APIView):
         user.save()
         otp_instance.delete()
         return Response("OTP verified successfully", status=status.HTTP_200_OK)
+
+
+class SendEmailOtpView(APIView):
+    def generate_otp(self):
+        return str(random.randint(100000, 999999))
+    
+    def hash_otp(self, otp):
+        return sha256(otp.encode()).hexdigest()
+    
+    def send_otp_email(self, email, otp):
+        subject = 'Your OTP for Registration'
+        message = f'Your OTP is: {otp}. Please use it to complete the registration process.'
+        send_mail(subject, message, os.getenv("EMAIL"), [email])
+
+    def post(self, request):
+        email = self.request.data.get("email")
+
+        try:
+            user = CustomUser.objects.get(email=email)
+        except CustomUser.DoesNotExist:
+            return Response("User not found, please register first", status=status.HTTP_404_NOT_FOUND)
+        
+        if user.email_verified == True:
+            return Response("User already verified", status=status.HTTP_400_BAD_REQUEST)
+        
+        try:
+            otp_instance = OTP.objects.get(user=user.id)
+            time_now = dj_timezone.now()
+            if otp_instance.expiration_time > time_now:
+                return Response("OTP is already active, please wait", status=status.HTTP_400_BAD_REQUEST)
+            otp_instance.delete()
+        except OTP.DoesNotExist:
+            pass
+
+        otp_code = self.generate_otp()
+        hashed_otp = self.hash_otp(otp_code)
+        expiration_time = dj_timezone.now() + timedelta(minutes=5)
+
+        otp_data = {'user': user.id, 'OTP': hashed_otp, 'expiration_time': expiration_time}
+        otp_serializer = OTPSerializer(data=otp_data)
+        if otp_serializer.is_valid():
+            otp_serializer.save()
+            self.send_otp_email(user.email, otp_code)
+            return Response("OTP sent", status=status.HTTP_200_OK)
+        return Response(otp_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
