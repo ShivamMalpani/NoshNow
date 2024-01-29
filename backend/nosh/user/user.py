@@ -2,9 +2,11 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
 from django.core.mail import send_mail
+from django.utils import timezone as dj_timezone
+from ..models import CustomUser, OTP
 from ..serializers import CustomUserSerializer, OTPSerializer
 from dotenv import load_dotenv
-from datetime import datetime, timedelta
+from datetime import timedelta
 from hashlib import sha256
 import random
 import os
@@ -32,7 +34,7 @@ class RegistrationView(APIView):
             user = user_serializer.save()
             otp_code = self.generate_otp()
             hashed_otp = self.hash_otp(otp_code)
-            expiration_time = datetime.now() + timedelta(minutes=15)
+            expiration_time = dj_timezone.now() + timedelta(minutes=5)
             
             otp_data = {'user': user.id, 'OTP': hashed_otp, 'expiration_time': expiration_time}
             otp_serializer = OTPSerializer(data=otp_data)
@@ -42,3 +44,36 @@ class RegistrationView(APIView):
                 return Response(user_serializer.data, status=status.HTTP_201_CREATED)
             return Response(otp_serializer.errors, status=status.HTTP_400_BAD_REQUEST)        
         return Response(user_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class VerifyEmailOTP(APIView):
+    def post(self, request):
+        email = self.request.data.get("email")
+        otp = self.request.data.get("otp")
+
+        try:
+            user = CustomUser.objects.get(email=email)
+        except CustomUser.DoesNotExist:
+            return Response("User not found, please register first", status=status.HTTP_404_NOT_FOUND)
+        
+        if user.email_verified == True:
+            return Response("User already verified", status=status.HTTP_400_BAD_REQUEST)
+        
+        try:
+            otp_instance = OTP.objects.get(user=user.id)
+        except:
+            return Response("OTP not found please request another OTP", status=status.HTTP_404_NOT_FOUND)
+        
+        time_now = dj_timezone.now()
+        if otp_instance.expiration_time < time_now:
+            otp_instance.delete()
+            return Response("OTP expired request another one", status=status.HTTP_400_BAD_REQUEST)
+        
+        hashed_otp = sha256(otp.encode()).hexdigest()
+        if hashed_otp != otp_instance.OTP:
+            return Response("Incorrect OTP", status=status.HTTP_400_BAD_REQUEST)
+        
+        user.email_verified = True
+        user.save()
+        otp_instance.delete()
+        return Response("OTP verified successfully", status=status.HTTP_200_OK)
