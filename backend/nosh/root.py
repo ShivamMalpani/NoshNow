@@ -9,6 +9,9 @@ from rest_framework.response import Response
 def api_root(request, format=None):
     return Response(
         {
+            "register_user": reverse(
+                "register_user", request=request, format=format
+            ),
             "restaurant_list": reverse(
                 "restaurant_list", request=request, format=format
             ),

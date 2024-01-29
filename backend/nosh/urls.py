@@ -1,6 +1,7 @@
 # urls.py
 from django.urls import path, include
 from .root import api_root
+from .user.user import RegistrationView
 from .catalogue.students import RestaurantListView, ItemListView, AddCartView, ClearCartView, ViewCartView, ViewRestaurantView
 from .catalogue.restaurant import AddItemView, UpdateItemView, RemoveItemView, ViewItemAPIView, UpdateItemStatusView, UpdateItemQuantityView
 from .orders.student import CreateOrderView, CancelOrderView, StudentOrderHistoryView, ViewOrderView
@@ -9,6 +10,7 @@ from .delivery import *
 
 urlpatterns = [
     path("", api_root),
+    path('api/user/user/register_user', RegistrationView.as_view(), name='register_user'),
     path('api/catalogue/students/restaurant_list', RestaurantListView.as_view(), name='restaurant_list'),
     path('api/catalogue/students/item_list/<int:restaurant_id>', ItemListView.as_view(), name='item_list'),
     path('api/catalogue/students/view_restaurant/<int:restaurant_id>', ViewRestaurantView.as_view(), name='view_restaurant'),

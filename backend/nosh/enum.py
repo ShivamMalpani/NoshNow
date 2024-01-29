@@ -37,3 +37,9 @@ class Address(Enum):
 class PaymentReason(Enum):
     ORDER_CANCELLATION = 'order_cancellation'
     ORDER_PLACE = 'order_place'
+
+
+class UserType(Enum):
+    STUDENT = 'student'
+    RESTAURANT = 'restaurant'
+    DRIVER = 'driver'

@@ -1,11 +1,29 @@
 # serializers.py
 from rest_framework import serializers
-from .models import Order, Restaurant, Item, UserMod, PaymentHistory
+from .models import Order, Restaurant, Item, UserMod, PaymentHistory, CustomUser, OTP
 from .enum import OrderType, PaymentType, Address
     
 class CheckoutByUserIdSerializer(serializers.Serializer):
     restaurant_id = serializers.IntegerField()
     order_ids = serializers.ListField(child=serializers.IntegerField())
+
+
+class CustomUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CustomUser
+        fields = ['username', 'password', 'email', 'user_type', 'mobile_no', 'first_name', 'last_name', 'profile_pic', 'amount']
+        extra_kwargs = {
+            'password': {'write_only': True},
+            'username': {'required': True},
+            'email': {'required': True},
+            'user_type' : {'required' : True},
+        }
+
+
+class OTPSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = OTP
+        fields = ['user', 'OTP', 'expiration_time']
 
 
 class RestaurantListSerializer(serializers.ModelSerializer):
