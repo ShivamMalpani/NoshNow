@@ -121,3 +121,6 @@ class ConfirmDeliverySerializer(serializers.Serializer):
 
 class DeliveredByUserIDSerializer(serializers.Serializer):
     user_id = serializers.IntegerField()
+
+class ReachedByOrderIDSerializer(serializers.Serializer):
+    user_id = serializers.IntegerField()

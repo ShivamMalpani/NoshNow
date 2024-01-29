@@ -74,6 +74,21 @@ class ConfirmDeliveryByStudentIdView(generics.CreateAPIView):
         except Exception as e:
             return Response({'message': e})
 
+class ReachedByOrderIDView(generics.CreateAPIView):
+    serializer_class = ReachedByOrderIDSerializer
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user_id = serializer.validated_data['user_id']
+        try:
+            orders = Order.objects.filter(DeliveredBy=user_id, Status=OrderStatus.IN_TRANSIT.value)
+            if orders.exists():
+                orders.update(Status=OrderStatus.DELIVERED_PERSON_REACHED.value)
+                return Response({'message': 'Orders marked as deliveryPersonReached successfully'}, status=status.HTTP_200_OK)
+            else:
+                return Response({'message': 'No orders found with status IN_TRANSIT for the specified user'}, status=status.HTTP_404_NOT_FOUND)
+        except Order.DoesNotExist:
+            return Response({'message': 'An error occurred while updating orders'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 class DeliveredByUserIDView(generics.CreateAPIView):
     serializer_class = DeliveredByUserIDSerializer
