@@ -88,8 +88,17 @@ class AddCartView(APIView):
             if (check_item_restaurant != current_restaurant):
                 return Response("Wrong Restaurant", status=status.HTTP_400_BAD_REQUEST)
             
-            entry["item_list"][str(data["item_id"])] = data["quantity"]
-            Cart.update_one({"_id": userID}, {"$set": {"item_list": entry["item_list"]}})
+            if data["quantity"] > 0:
+                entry["item_list"][str(data["item_id"])] = data["quantity"]
+                Cart.update_one({"_id": userID}, {"$set": {"item_list": entry["item_list"]}})
+            elif data["quantity"] == 0:
+                entry["item_list"].pop(str(data["item_id"]), None)
+                if len(entry["item_list"]) == 0:
+                    Cart.delete_one({"_id": userID})
+                else:
+                    Cart.update_one({"_id": userID}, {"$set": {"item_list": entry["item_list"]}})
+            else:
+                return Response("Quantity should not be negative", status=status.HTTP_400_BAD_REQUEST)
             return Response("Success", status=status.HTTP_200_OK)
         else:
             Cart.insert_one({"_id": userID, "item_list": {str(data["item_id"]): data["quantity"]}})
