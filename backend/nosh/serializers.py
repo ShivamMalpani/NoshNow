@@ -1,5 +1,6 @@
 # serializers.py
 from rest_framework import serializers
+from django.contrib.auth import authenticate
 from .models import Order, Restaurant, Item, UserMod, PaymentHistory, CustomUser, OTP
 from .enum import OrderType, PaymentType, Address
     
@@ -24,6 +25,20 @@ class OTPSerializer(serializers.ModelSerializer):
     class Meta:
         model = OTP
         fields = ['user', 'OTP', 'expiration_time']
+
+
+class UserLoginSerializer(serializers.Serializer):
+    username = serializers.CharField()
+    password = serializers.CharField(write_only=True)
+
+    def validate(self, data):
+        username = data.get('username')
+        password = data.get('password')
+        user = authenticate(username=username, password=password)
+        if user and user.email_verified:
+            return user
+        else:
+            raise serializers.ValidationError("Invalid credentials or user not verified.")
 
 
 class RestaurantListSerializer(serializers.ModelSerializer):

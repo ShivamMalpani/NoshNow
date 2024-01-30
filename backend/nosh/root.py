@@ -18,6 +18,9 @@ def api_root(request, format=None):
             "send_email_otp": reverse(
                 "send_email_otp", request=request, format=format
             ),
+            "login": reverse(
+                "login", request=request, format=format
+            ),
             "restaurant_list": reverse(
                 "restaurant_list", request=request, format=format
             ),
