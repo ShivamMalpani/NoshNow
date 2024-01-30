@@ -64,6 +64,7 @@ class RestaurantListSerializer(serializers.ModelSerializer):
         fields = ['id', 'name', 'image', 'address', 'value', 'rating', 'is_open']
 
 class ItemSerializer(serializers.ModelSerializer):
+    cost = serializers.IntegerField(required=True)
     class Meta:
         model = Item
         fields = '__all__'
