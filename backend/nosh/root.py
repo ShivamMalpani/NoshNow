@@ -15,6 +15,12 @@ def api_root(request, format=None):
             "verify_email_otp": reverse(
                 "verify_email_otp", request=request, format=format
             ),
+            "send_email_otp": reverse(
+                "send_email_otp", request=request, format=format
+            ),
+            "login": reverse(
+                "login", request=request, format=format
+            ),
             "restaurant_list": reverse(
                 "restaurant_list", request=request, format=format
             ),

@@ -1,7 +1,7 @@
 # urls.py
 from django.urls import path, include
 from .root import api_root
-from .user.user import RegistrationView, VerifyEmailOTP
+from .user.user import RegistrationView, VerifyEmailOTP, SendEmailOtpView, LoginView
 from .catalogue.students import RestaurantListView, ItemListView, AddCartView, ClearCartView, ViewCartView, ViewRestaurantView
 from .catalogue.restaurant import AddItemView, UpdateItemView, RemoveItemView, ViewItemAPIView, UpdateItemStatusView, UpdateItemQuantityView
 from .orders.student import CreateOrderView, CancelOrderView, StudentOrderHistoryView, ViewOrderView
@@ -12,6 +12,8 @@ urlpatterns = [
     path("", api_root),
     path('api/user/user/register_user', RegistrationView.as_view(), name='register_user'),
     path('api/user/user/verify_email_otp', VerifyEmailOTP.as_view(), name='verify_email_otp'),
+    path('api/user/user/send_email_otp', SendEmailOtpView.as_view(), name='send_email_otp'),
+    path('api/user/user/login', LoginView.as_view(), name='login'),
     path('api/catalogue/students/restaurant_list', RestaurantListView.as_view(), name='restaurant_list'),
     path('api/catalogue/students/item_list/<int:restaurant_id>', ItemListView.as_view(), name='item_list'),
     path('api/catalogue/students/view_restaurant/<int:restaurant_id>', ViewRestaurantView.as_view(), name='view_restaurant'),
