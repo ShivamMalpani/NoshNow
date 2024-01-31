@@ -1,12 +1,13 @@
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework import status
+from rest_framework import status, generics
+from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth.hashers import make_password
 from django.core.mail import send_mail
 from django.utils import timezone as dj_timezone
 from ..models import CustomUser, OTP
-from ..serializers import CustomUserSerializer, OTPSerializer, UserLoginSerializer
+from ..serializers import CustomUserSerializer, OTPSerializer, UserLoginSerializer, LogoutSerializer
 from dotenv import load_dotenv
 from datetime import timedelta
 from hashlib import sha256
@@ -141,3 +142,14 @@ class LoginView(APIView):
             'access': str(refresh.access_token),
             'refresh': str(refresh),
         }, status=status.HTTP_200_OK)
+
+
+class LogoutView(generics.GenericAPIView):
+    serializer_class = LogoutSerializer
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response("Successfully logged out", status=status.HTTP_204_NO_CONTENT)

@@ -1,6 +1,7 @@
 # serializers.py
 from rest_framework import serializers
 from django.contrib.auth import authenticate
+from rest_framework_simplejwt.tokens import RefreshToken, TokenError
 from .models import Order, Restaurant, Item, UserMod, PaymentHistory, CustomUser, OTP
 from .enum import OrderType, PaymentType, Address
     
@@ -41,6 +42,20 @@ class UserLoginSerializer(serializers.Serializer):
             raise serializers.ValidationError("Invalid credentials or user not verified.")
 
 
+class LogoutSerializer(serializers.Serializer):
+    refresh = serializers.CharField()
+
+    def validate(self, attrs):
+        self.token = attrs['refresh']
+        return attrs
+    
+    def save(self, **kwargs):
+        try:
+            RefreshToken(self.token).blacklist()
+        except TokenError:
+            self.fail("bad token")
+
+
 class RestaurantListSerializer(serializers.ModelSerializer):
     is_open = serializers.BooleanField(read_only=True)
 
@@ -49,6 +64,7 @@ class RestaurantListSerializer(serializers.ModelSerializer):
         fields = ['id', 'name', 'image', 'address', 'value', 'rating', 'is_open']
 
 class ItemSerializer(serializers.ModelSerializer):
+    cost = serializers.IntegerField(required=True)
     class Meta:
         model = Item
         fields = '__all__'

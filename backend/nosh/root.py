@@ -21,6 +21,12 @@ def api_root(request, format=None):
             "login": reverse(
                 "login", request=request, format=format
             ),
+            "logout": reverse(
+                "logout", request=request, format=format
+            ),
+            "token_refresh": reverse(
+                "token_refresh", request=request, format=format
+            ),
             "restaurant_list": reverse(
                 "restaurant_list", request=request, format=format
             ),
