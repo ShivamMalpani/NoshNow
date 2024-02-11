@@ -5,6 +5,6 @@ import os
 
 load_dotenv()
 
-uri = os.getenv("CONNECTION_STRING")
+uri = os.getenv("mongodb+srv://Ananya:Goldenarcs@1@clusternosh.pmbhisy.mongodb.net/?retryWrites=true&w=majority")
 myclient = MongoClient(uri, server_api=ServerApi('1'))
 mydb = myclient["NoshNow"]

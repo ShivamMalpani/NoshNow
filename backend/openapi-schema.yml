@@ -1,0 +1,987 @@
+openapi: 3.0.2
+info:
+  title: ''
+  version: ''
+paths:
+  /:
+    get:
+      operationId: listapi_roots
+      description: ''
+      parameters: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items: {}
+          description: ''
+      tags:
+      - ''
+  /api/catalogue/students/restaurant_list:
+    get:
+      operationId: listRestaurantLists
+      description: ''
+      parameters: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RestaurantList'
+          description: ''
+      tags:
+      - api
+  /api/catalogue/students/item_list/{restaurant_id}:
+    get:
+      operationId: retrieveItemList
+      description: ''
+      parameters:
+      - name: restaurant_id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema: {}
+          description: ''
+      tags:
+      - api
+  /api/catalogue/students/view_restaurant/{restaurant_id}:
+    get:
+      operationId: retrieveViewRestaurant
+      description: ''
+      parameters:
+      - name: restaurant_id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema: {}
+          description: ''
+      tags:
+      - api
+  /api/catalogue/students/view_cart/{userID}:
+    get:
+      operationId: retrieveViewCart
+      description: ''
+      parameters:
+      - name: userID
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema: {}
+          description: ''
+      tags:
+      - api
+  /api/catalogue/restaurant/view_item/{id}:
+    get:
+      operationId: retrieveItem
+      description: ''
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: A unique integer value identifying this item.
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Item'
+          description: ''
+      tags:
+      - api
+  /api/order/student/view_order_history/{userID}:
+    get:
+      operationId: retrieveOrderHistory
+      description: ''
+      parameters:
+      - name: userID
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderHistory'
+          description: ''
+      tags:
+      - api
+  /api/order/student/view_order/{orderID}/{userID}/:
+    get:
+      operationId: retrieveViewOrder
+      description: ''
+      parameters:
+      - name: orderID
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: userID
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema: {}
+          description: ''
+      tags:
+      - api
+  /api/restaurants/active_orders/:
+    get:
+      operationId: listOrders
+      description: ''
+      parameters: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Order'
+          description: ''
+      tags:
+      - api
+  /api/restaurants/order_history/:
+    get:
+      operationId: listOrderHistorys
+      description: ''
+      parameters: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OrderHistory'
+          description: ''
+      tags:
+      - api
+  /api/restaurants/payment_history/:
+    get:
+      operationId: listPaymentHistorys
+      description: ''
+      parameters: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PaymentHistory'
+          description: ''
+      tags:
+      - api
+  /api/restaurants/view_wallet/:
+    get:
+      operationId: retrieveUserMod
+      description: ''
+      parameters: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ViewWallet'
+          description: ''
+      tags:
+      - api
+  /api/user/user/register_user:
+    post:
+      operationId: createRegistration
+      description: ''
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema: {}
+          application/x-www-form-urlencoded:
+            schema: {}
+          multipart/form-data:
+            schema: {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema: {}
+          description: ''
+      tags:
+      - api
+  /api/user/user/verify_email_otp:
+    post:
+      operationId: createVerifyEmailOTP
+      description: ''
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema: {}
+          application/x-www-form-urlencoded:
+            schema: {}
+          multipart/form-data:
+            schema: {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema: {}
+          description: ''
+      tags:
+      - api
+  /api/user/user/send_email_otp:
+    post:
+      operationId: createSendEmailOtp
+      description: ''
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema: {}
+          application/x-www-form-urlencoded:
+            schema: {}
+          multipart/form-data:
+            schema: {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema: {}
+          description: ''
+      tags:
+      - api
+  /api/user/user/login:
+    post:
+      operationId: createLogin
+      description: ''
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema: {}
+          application/x-www-form-urlencoded:
+            schema: {}
+          multipart/form-data:
+            schema: {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema: {}
+          description: ''
+      tags:
+      - api
+  /api/user/user/logout:
+    post:
+      operationId: createLogout
+      description: ''
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Logout'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Logout'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Logout'
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Logout'
+          description: ''
+      tags:
+      - api
+  /api/user/user/refresh/:
+    post:
+      operationId: createTokenRefresh
+      description: 'Takes a refresh type JSON web token and returns an access type
+        JSON web
+
+        token if the refresh token is valid.'
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenRefresh'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TokenRefresh'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TokenRefresh'
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenRefresh'
+          description: ''
+      tags:
+      - api
+  /api/catalogue/students/add_cart:
+    post:
+      operationId: createAddCart
+      description: ''
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema: {}
+          application/x-www-form-urlencoded:
+            schema: {}
+          multipart/form-data:
+            schema: {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema: {}
+          description: ''
+      tags:
+      - api
+  /api/catalogue/students/clear_cart:
+    post:
+      operationId: createClearCart
+      description: ''
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema: {}
+          application/x-www-form-urlencoded:
+            schema: {}
+          multipart/form-data:
+            schema: {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema: {}
+          description: ''
+      tags:
+      - api
+  /api/catalogue/restaurant/add_item:
+    post:
+      operationId: createAddItem
+      description: ''
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema: {}
+          application/x-www-form-urlencoded:
+            schema: {}
+          multipart/form-data:
+            schema: {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema: {}
+          description: ''
+      tags:
+      - api
+  /api/catalogue/restaurant/update_item:
+    post:
+      operationId: createUpdateItem
+      description: ''
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema: {}
+          application/x-www-form-urlencoded:
+            schema: {}
+          multipart/form-data:
+            schema: {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema: {}
+          description: ''
+      tags:
+      - api
+  /api/catalogue/restaurant/delete_item:
+    post:
+      operationId: createRemoveItem
+      description: ''
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema: {}
+          application/x-www-form-urlencoded:
+            schema: {}
+          multipart/form-data:
+            schema: {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema: {}
+          description: ''
+      tags:
+      - api
+  /api/catalogue/restaurant/update_item_status:
+    post:
+      operationId: createUpdateItemStatus
+      description: ''
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema: {}
+          application/x-www-form-urlencoded:
+            schema: {}
+          multipart/form-data:
+            schema: {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema: {}
+          description: ''
+      tags:
+      - api
+  /api/catalogue/restaurant/update_item_quantity:
+    post:
+      operationId: createUpdateItemQuantity
+      description: ''
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema: {}
+          application/x-www-form-urlencoded:
+            schema: {}
+          multipart/form-data:
+            schema: {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema: {}
+          description: ''
+      tags:
+      - api
+  /api/order/student/create_order:
+    post:
+      operationId: createCreateOrder
+      description: ''
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema: {}
+          application/x-www-form-urlencoded:
+            schema: {}
+          multipart/form-data:
+            schema: {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema: {}
+          description: ''
+      tags:
+      - api
+  /api/order/student/cancel_order:
+    post:
+      operationId: createCancelOrder
+      description: ''
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema: {}
+          application/x-www-form-urlencoded:
+            schema: {}
+          multipart/form-data:
+            schema: {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema: {}
+          description: ''
+      tags:
+      - api
+  /api/checkout_by_user/:
+    post:
+      operationId: createCheckoutByUserId
+      description: ''
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CheckoutByUserId'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CheckoutByUserId'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CheckoutByUserId'
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CheckoutByUserId'
+          description: ''
+      tags:
+      - api
+  /api/undo_checkout_by_order/:
+    post:
+      operationId: createUndoCheckoutByOrderId
+      description: ''
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UndoCheckoutByOrderId'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UndoCheckoutByOrderId'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UndoCheckoutByOrderId'
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UndoCheckoutByOrderId'
+          description: ''
+      tags:
+      - api
+  /api/restaurants/freeze_order/:
+    post:
+      operationId: createFreezeOrder
+      description: ''
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FreezeOrder'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/FreezeOrder'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/FreezeOrder'
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FreezeOrder'
+          description: ''
+      tags:
+      - api
+  /api/view_checkout_by_user/:
+    post:
+      operationId: createOrder
+      description: ''
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ViewCheckoutByUserId'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ViewCheckoutByUserId'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ViewCheckoutByUserId'
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ViewCheckoutByUserId'
+          description: ''
+      tags:
+      - api
+  /api/confirm_delivery_by_student/:
+    post:
+      operationId: createConfirmDelivery
+      description: ''
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConfirmDelivery'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ConfirmDelivery'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ConfirmDelivery'
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConfirmDelivery'
+          description: ''
+      tags:
+      - api
+  /api/reached_by_order/:
+    post:
+      operationId: createReachedByOrderID
+      description: ''
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReachedByOrderID'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ReachedByOrderID'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ReachedByOrderID'
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReachedByOrderID'
+          description: ''
+      tags:
+      - api
+  /api/delivered_by_user/:
+    post:
+      operationId: createDeliveredByUserID
+      description: ''
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeliveredByUserID'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/DeliveredByUserID'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/DeliveredByUserID'
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeliveredByUserID'
+          description: ''
+      tags:
+      - api
+components:
+  schemas:
+    RestaurantList:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 255
+        image:
+          type: string
+          format: uri
+          nullable: true
+          maxLength: 200
+          pattern: "^(?:[a-z0-9.+-]*)://(?:[^\\s:@/]+(?::[^\\s:@/]*)?@)?(?:(?:0|25[0-5]|2[0-4][0-9]|1[0-9]?[0-9]?|[1-9][0-9]?)(?:\\\
+            .(?:0|25[0-5]|2[0-4][0-9]|1[0-9]?[0-9]?|[1-9][0-9]?)){3}|\\[[0-9a-f:.]+\\\
+            ]|([a-z\xA1-\uFFFF0-9](?:[a-z\xA1-\uFFFF0-9-]{0,61}[a-z\xA1-\uFFFF0-9])?(?:\\\
+            .(?!-)[a-z\xA1-\uFFFF0-9-]{1,63}(?<!-))*\\.(?!-)(?:[a-z\xA1-\uFFFF-]{2,63}|xn--[a-z0-9]{1,59})(?<!-)\\\
+            .?|localhost))(?::[0-9]{1,5})?(?:[/?#][^\\s]*)?\\z"
+        address:
+          type: string
+          maxLength: 255
+        value:
+          type: integer
+        rating:
+          type: number
+          nullable: true
+        is_open:
+          type: boolean
+          readOnly: true
+      required:
+      - name
+      - address
+    Item:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        cost:
+          type: integer
+        name:
+          type: string
+          maxLength: 255
+        description:
+          type: string
+        instant_item:
+          type: boolean
+        available:
+          type: boolean
+        quantity:
+          type: integer
+        image:
+          type: string
+          format: uri
+          nullable: true
+          maxLength: 200
+          pattern: "^(?:[a-z0-9.+-]*)://(?:[^\\s:@/]+(?::[^\\s:@/]*)?@)?(?:(?:0|25[0-5]|2[0-4][0-9]|1[0-9]?[0-9]?|[1-9][0-9]?)(?:\\\
+            .(?:0|25[0-5]|2[0-4][0-9]|1[0-9]?[0-9]?|[1-9][0-9]?)){3}|\\[[0-9a-f:.]+\\\
+            ]|([a-z\xA1-\uFFFF0-9](?:[a-z\xA1-\uFFFF0-9-]{0,61}[a-z\xA1-\uFFFF0-9])?(?:\\\
+            .(?!-)[a-z\xA1-\uFFFF0-9-]{1,63}(?<!-))*\\.(?!-)(?:[a-z\xA1-\uFFFF-]{2,63}|xn--[a-z0-9]{1,59})(?<!-)\\\
+            .?|localhost))(?::[0-9]{1,5})?(?:[/?#][^\\s]*)?\\z"
+        rating:
+          type: number
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        restaurant_id:
+          type: integer
+      required:
+      - cost
+      - name
+      - description
+      - restaurant_id
+    OrderHistory:
+      type: object
+      properties:
+        OrderID:
+          type: integer
+          readOnly: true
+        CustomerID:
+          type: integer
+        Address:
+          type: string
+          maxLength: 255
+        Status:
+          type: string
+          maxLength: 50
+        Amount:
+          type: integer
+        PaymentStatus:
+          type: string
+          maxLength: 50
+        PaymentType:
+          type: string
+          maxLength: 100
+        DeliveredBy:
+          type: integer
+          nullable: true
+        CreatedAt:
+          type: string
+          format: date-time
+          readOnly: true
+        DeliveredAt:
+          type: string
+          format: date-time
+          nullable: true
+        RestaurantID:
+          type: integer
+        RestaurantName:
+          type: string
+          readOnly: true
+      required:
+      - CustomerID
+      - Address
+      - Status
+      - Amount
+      - PaymentStatus
+      - PaymentType
+      - RestaurantID
+    Order:
+      type: object
+      properties:
+        OrderID:
+          type: integer
+          readOnly: true
+        CustomerID:
+          type: integer
+        Address:
+          type: string
+          maxLength: 255
+        Status:
+          type: string
+          maxLength: 50
+        PaymentStatus:
+          type: string
+          maxLength: 50
+        CreatedAt:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - CustomerID
+      - Address
+      - Status
+      - PaymentStatus
+    PaymentHistory:
+      type: object
+      properties:
+        TransactionID:
+          type: integer
+          readOnly: true
+        UserID:
+          type: integer
+        Payee:
+          type: integer
+        Amount:
+          type: integer
+        Timestamp:
+          type: string
+          format: date-time
+          readOnly: true
+        Reason:
+          enum:
+          - order_cancellation
+          - order_place
+          type: string
+        OrderID:
+          type: integer
+          nullable: true
+      required:
+      - UserID
+      - Payee
+      - Amount
+      - Reason
+    ViewWallet:
+      type: object
+      properties:
+        amount:
+          type: string
+          format: decimal
+          multipleOf: 0.01
+          maximum: 100000000
+          minimum: -100000000
+          readOnly: true
+    Logout:
+      type: object
+      properties:
+        refresh:
+          type: string
+      required:
+      - refresh
+    TokenRefresh:
+      type: object
+      properties:
+        refresh:
+          type: string
+        access:
+          type: string
+          readOnly: true
+      required:
+      - refresh
+    CheckoutByUserId:
+      type: object
+      properties:
+        restaurant_id:
+          type: integer
+        order_ids:
+          type: array
+          items:
+            type: integer
+      required:
+      - restaurant_id
+      - order_ids
+    UndoCheckoutByOrderId:
+      type: object
+      properties:
+        order_id:
+          type: integer
+      required:
+      - order_id
+    FreezeOrder:
+      type: object
+      properties:
+        OrderID:
+          type: integer
+        RestaurantID:
+          type: integer
+        freeze:
+          type: boolean
+      required:
+      - OrderID
+      - RestaurantID
+      - freeze
+    ViewCheckoutByUserId:
+      type: object
+      properties:
+        user_id:
+          type: integer
+      required:
+      - user_id
+    ConfirmDelivery:
+      type: object
+      properties:
+        user_id:
+          type: integer
+      required:
+      - user_id
+    ReachedByOrderID:
+      type: object
+      properties:
+        user_id:
+          type: integer
+      required:
+      - user_id
+    DeliveredByUserID:
+      type: object
+      properties:
+        user_id:
+          type: integer
+      required:
+      - user_id
