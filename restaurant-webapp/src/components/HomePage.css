@@ -1,0 +1,60 @@
+.homepage {
+    position: relative;
+    text-align: center;
+    overflow: hidden; /* Hide overflow for the background image */
+    height: 100vh; /* Set the height to cover the entire viewport */
+}
+
+.background-image {
+    background-image: url('https://images.pexels.com/photos/941861/pexels-photo-941861.jpeg?cs=srgb&dl=pexels-chan-walrus-941861.jpg&fm=jpg');
+    background-size: cover;
+    background-position: center;
+    height: 100%; /* Set the height to cover the entire parent container */
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    animation: zoomIn 2s ease-in-out; /* Add zoomIn animation */
+}
+
+
+@keyframes zoomIn {
+    from {
+        transform: scale(1.1); /* Start with a slightly larger size */
+    }
+    to {
+        transform: scale(1); /* Return to the original size */
+    }
+}
+
+.content {
+    position: relative;
+    z-index: 1;
+    padding: 50px;
+    color: #f0f8ff; /* Bright bluish-white text color */
+    /* border: 2px solid blue; Blue border */
+    border-radius: 10px; /* Rounded border corners */
+}
+
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(100px); /* Start below the screen */
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0); /* Move to the original position */
+    }
+}
+
+.heading {
+    font-size: 3rem;
+    margin-bottom: 20px;
+}
+
+p {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+}
