@@ -139,10 +139,10 @@ class ViewWalletSerializer(serializers.Serializer):
 class UndoCheckoutByOrderIdSerializer(serializers.Serializer):
     order_id = serializers.IntegerField()
 
-class ViewCheckoutByUserIdSerializer(serializers.Serializer):
+class ListCheckoutByUserIdSerializer(serializers.Serializer):
     user_id = serializers.IntegerField()
 
-class ViewCheckoutByUserIdSerializer2(serializers.ModelSerializer):
+class ListCheckoutByUserIdSerializer2(serializers.ModelSerializer):
     class Meta:
         model = Order
         fields = ['OrderID', 'CustomerID', 'Address', 'Status', 'PaymentStatus', 'CreatedAt', 'RestaurantID']
