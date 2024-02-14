@@ -8,11 +8,13 @@ from django.core.mail import send_mail
 from django.utils import timezone as dj_timezone
 from ..models import CustomUser, OTP
 from ..serializers import CustomUserSerializer, OTPSerializer, UserLoginSerializer, LogoutSerializer
+from ..producer import kafka_producer
 from dotenv import load_dotenv
 from datetime import timedelta
 from hashlib import sha256
 import random
 import os
+import json
 
 
 load_dotenv()
@@ -25,7 +27,7 @@ class RegistrationView(APIView):
     def hash_otp(self, otp):
         return sha256(otp.encode()).hexdigest()
     
-    def send_otp_email(self, email, otp):
+    def send_otp_email(email, otp):
         subject = 'Your OTP for Registration'
         message = f'Your OTP is: {otp}. Please use it to complete the registration process.'
         send_mail(subject, message, os.getenv("EMAIL"), [email])
@@ -44,7 +46,14 @@ class RegistrationView(APIView):
             otp_serializer = OTPSerializer(data=otp_data)
             if otp_serializer.is_valid():
                 otp_serializer.save()
-                self.send_otp_email(user.email, otp_code)
+                value_bytes = json.dumps({
+                    "email": user.email,
+                    "otp": otp_code
+                }).encode('utf-8')
+
+                #Producer creates kafka message and fulshes it
+                kafka_producer.produce('user-events', key=str(user.id), value=value_bytes)
+                kafka_producer.flush()
                 return Response(user_serializer.data, status=status.HTTP_201_CREATED)
             return Response(otp_serializer.errors, status=status.HTTP_400_BAD_REQUEST)        
         return Response(user_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -123,7 +132,14 @@ class SendEmailOtpView(APIView):
         otp_serializer = OTPSerializer(data=otp_data)
         if otp_serializer.is_valid():
             otp_serializer.save()
-            self.send_otp_email(user.email, otp_code)
+            value_bytes = json.dumps({
+                "email": user.email,
+                "otp": otp_code
+            }).encode('utf-8')
+
+            #Producer creates kafka message and fulshes it
+            kafka_producer.produce('user-events', key=str(user.id), value=value_bytes)
+            kafka_producer.flush()
             cache.set(cache_key, otp_code, timeout=300)
             return Response("OTP sent", status=status.HTTP_200_OK)
         return Response(otp_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
