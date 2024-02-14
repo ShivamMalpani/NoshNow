@@ -2,8 +2,11 @@
 from rest_framework import serializers
 from django.contrib.auth import authenticate
 from rest_framework_simplejwt.tokens import RefreshToken, TokenError
-from .models import Order, Restaurant, Item, UserMod, PaymentHistory, CustomUser, OTP
+from .models import Order, Restaurant, Item, UserMod, PaymentHistory, CustomUser, OTP, ItemDocument
 from .enum import OrderType, PaymentType, Address
+from rest_framework import serializers
+from django_elasticsearch_dsl_drf.serializers import DocumentSerializer
+
     
 class CheckoutByUserIdSerializer(serializers.Serializer):
     restaurant_id = serializers.IntegerField()
@@ -155,3 +158,12 @@ class DeliveredByUserIDSerializer(serializers.Serializer):
 
 class ReachedByOrderIDSerializer(serializers.Serializer):
     user_id = serializers.IntegerField()
+
+
+class ItemSerializer(DocumentSerializer):
+    class Meta:
+        model = ItemDocument
+        fields = '__all__'  # Return all fields
+
+class ItemSearchSerializer(serializers.Serializer):
+    q = serializers.CharField(required=True)  # Search query parameter

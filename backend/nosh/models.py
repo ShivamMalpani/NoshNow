@@ -1,7 +1,9 @@
-# models.py
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from .enum import PaymentReason, UserType
+from django_elasticsearch_dsl import Document, fields
+from django_elasticsearch_dsl.connections import connections
+
 
 REASON_CHOICES = [(reason.value, reason.name.replace('_', ' ').title()) for reason in PaymentReason]
 USER_CHOICES = [(user_type.value, user_type.name.replace('_', ' ').title()) for user_type in UserType]
@@ -51,6 +53,15 @@ class Item(models.Model):
 
     def __str__(self):
         return f"{self.name} - {self.restaurant_id.name}"
+    
+class ItemDocument(Document):
+    class Meta:
+        model = Item
+        fields = ['name', 'cost', 'description', 'restaurant_id', 'instant_item', 'available', 'quantity', 'image', 'rating', 'created_at']
+        index = connections.get_connection().create_index(Item._meta.db_table)
+
+Item.objects.using('default').register(ItemDocument)  
+
 
 class Order(models.Model):
     OrderID = models.AutoField(primary_key=True)

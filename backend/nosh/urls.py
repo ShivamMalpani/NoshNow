@@ -3,7 +3,7 @@ from django.urls import path, include
 from .root import api_root
 from rest_framework_simplejwt.views import TokenRefreshView
 from .user.user import RegistrationView, VerifyEmailOTP, SendEmailOtpView, LoginView, LogoutView
-from .catalogue.students import RestaurantListView, ItemListView, AddCartView, ClearCartView, ViewCartView, ViewRestaurantView
+from .catalogue.students import RestaurantListView, ItemListView, AddCartView, ClearCartView, ViewCartView, ViewRestaurantView, ItemSearchView
 from .catalogue.restaurant import AddItemView, UpdateItemView, RemoveItemView, ViewItemAPIView, UpdateItemStatusView, UpdateItemQuantityView
 from .orders.student import CreateOrderView, CancelOrderView, StudentOrderHistoryView, ViewOrderView
 from .orders.restaurants import ActiveOrderListView, OrderHistoryView, FreezeOrderView, PaymentHistoryView, ViewWalletView
@@ -46,4 +46,5 @@ urlpatterns = [
     # path('api/restaurants/undo_checkout/', UndoCheckoutByOrderIDView.as_view(), name='undo-checkout-by-order-id'),
     path('api/restaurants/payment_history/', PaymentHistoryView.as_view(), name='payment-history'),
     path('api/restaurants/view_wallet/', ViewWalletView.as_view(), name='view-wallet'),
+    path('items/', ItemSearchView.as_view({'get': 'list'}), name='search-items'),
 ]

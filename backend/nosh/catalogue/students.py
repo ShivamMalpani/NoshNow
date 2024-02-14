@@ -2,7 +2,7 @@ from rest_framework import generics
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from ..models import Restaurant, Item, UserMod
+from ..models import Restaurant, Item, UserMod, ItemDocument
 from ..serializers import RestaurantListSerializer, ItemSerializer, OwnerSerializer
 from ..connection import mydb
 from django.utils import timezone
@@ -138,3 +138,14 @@ class ViewCartView(APIView):
                 data["items"].append(item_dict)
             data["total_amount"] = total_amount
             return Response(data, status=status.HTTP_200_OK)
+
+class ItemSearchView(DocumentViewSet):
+    document = ItemDocument
+    serializer_class = ItemSerializer
+
+    def get_queryset(self):
+        q = self.request.query_params.get('q')
+        if q:
+            return ItemDocument.search().query('multi_match', query=q, fields=['name', 'description'])
+        else:
+            return ItemDocument.search().query('match_all')
