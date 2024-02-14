@@ -1,0 +1,63 @@
+.order-history-container {
+  padding: 20px;
+}
+
+.order-history-heading {
+  font-size: 24px;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.order-history-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-gap: 20px;
+}
+
+.order-history-item {
+  border: 1px solid #ccc;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.order-history-item p {
+  margin: 10px 0;
+}
+
+.status-section {
+  margin-top: 10px;
+}
+
+.status {
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-weight: bold;
+}
+
+.delivered {
+  background-color: #4caf50;
+  color: white;
+}
+
+.on-delivery {
+  background-color: #ffc107;
+  color: white;
+}
+
+.payment-status {
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-weight: bold;
+}
+
+.paid {
+  background-color: #4caf50;
+  color: white;
+}
+
+.pending {
+  background-color: #ff9800;
+  color: white;
+}

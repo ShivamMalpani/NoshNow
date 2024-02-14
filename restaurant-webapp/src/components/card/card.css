@@ -1,0 +1,9 @@
+.custom-card {
+    border: 1px solid #000; /* Add border with 1px width */
+    transition: transform 0.2s; /* Add transition for smooth zoom effect */
+  }
+  
+  .custom-card:hover {
+    transform: scale(1.05); /* Zoom effect on hover */
+  }
+  
