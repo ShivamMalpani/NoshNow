@@ -83,13 +83,17 @@ class VerifyEmailOTP(APIView):
         return Response("OTP verified successfully", status=status.HTTP_200_OK)
 
 
+from django.core.cache import cache
+
 class SendEmailOtpView(APIView):
+    CACHE_PREFIX = 'otp_cache_'
+
     def generate_otp(self):
         return str(random.randint(100000, 999999))
-    
+
     def hash_otp(self, otp):
         return sha256(otp.encode()).hexdigest()
-    
+
     def send_otp_email(self, email, otp):
         subject = 'Your OTP for Registration'
         message = f'Your OTP is: {otp}. Please use it to complete the registration process.'
@@ -103,17 +107,13 @@ class SendEmailOtpView(APIView):
         except CustomUser.DoesNotExist:
             return Response("User not found, please register first", status=status.HTTP_404_NOT_FOUND)
         
-        if user.email_verified == True:
+        if user.email_verified:
             return Response("User already verified", status=status.HTTP_400_BAD_REQUEST)
         
-        try:
-            otp_instance = OTP.objects.get(user=user.id)
-            time_now = dj_timezone.now()
-            if otp_instance.expiration_time > time_now:
-                return Response("OTP is already active, please wait", status=status.HTTP_400_BAD_REQUEST)
-            otp_instance.delete()
-        except OTP.DoesNotExist:
-            pass
+        cache_key = self.CACHE_PREFIX + email
+        cached_otp = cache.get(cache_key)
+        if cached_otp:
+            return Response("OTP is already active, please wait", status=status.HTTP_400_BAD_REQUEST)
 
         otp_code = self.generate_otp()
         hashed_otp = self.hash_otp(otp_code)
@@ -124,6 +124,7 @@ class SendEmailOtpView(APIView):
         if otp_serializer.is_valid():
             otp_serializer.save()
             self.send_otp_email(user.email, otp_code)
+            cache.set(cache_key, otp_code, timeout=300)
             return Response("OTP sent", status=status.HTTP_200_OK)
         return Response(otp_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
